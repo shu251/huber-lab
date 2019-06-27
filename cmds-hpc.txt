@@ -1,0 +1,127 @@
+# Useful commands - S.Hu 
+# Last updated June 2019
+
+# LOGIN
+ssh sarahhu@poseidon.whoi.edu
+
+# PATH & DIRECTORY INFORMATION
+cd /vortexfs1/omics/huber/
+pwd #print current working directory
+cd $SCRATCH #migrate to scratch
+cd /vortexfs1/scratch/sarahhu/ # scratch
+
+mkdir shu
+ls
+ls -lht
+
+# TAKE ALL MY FILES FROM OVER HERE AND MOVE THEM TO OVER THERE
+## move ‘clustering_tutorial.Rmd’ and “.html” to Poseidon
+## LOCAL LOCATION: /Users/sarahhu/Desktop/Projects/microbiome_TimeSeries_bestpractice/analyzing_microbiome_timeseries/module_clustering/clustering_tutorial*
+## USE PWD TO FIGURE OUT WHERE YOU WANT THESE FILES
+## LOCALLY PERFORM A SECURE COPY (scp)
+scp clustering_tutorial* sarahhu@poseidon.whoi.edu: /vortexfs1/omics/huber/shu/18S_pipeline_V4
+## you will be prompted for password
+
+
+## EXAMPLE BETWEEN SERVERS:
+## FROM THE WHOI SERVER, I WANT TO BRING .py SCRIPT FROM THE CDEBI SERVER
+scp huberlab@kuat.usc.edu:/media/executor/huberlab/shu/python/list_blast.py .
+
+# WHAT IS HAPPENING
+sinfo # cluster information
+squeue #show all jobs
+squeue -u sarahhu # use to look at what you are running (only your jobs)
+
+# mmlsquota --block-size auto
+# mmlsquota -g sg-groupname --block-size auto
+
+shelp
+
+# Submitting jobs:
+sbatch submit.script # submits job, more below on this script
+scancel <job id> # cancel <job id>
+hq     # shows home quota and usage
+srun -p interactive -N <nodes> -n <cores> --mem=4gb --pty bash # interactive request
+
+
+# WHAT PROGRAMS ARE AVAILABLE
+module list # What do I have loaded?
+module av #W hat is available to me?
+## LOAD BIOLOGY
+module load bio
+module av
+module list
+
+# ANACONDA
+module load anaconda/5.1
+module list
+conda info --envs
+# https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/
+
+
+#######################################
+## Best practices for poseidon usage ##
+#######################################
+
+# Enter interactive or scavenger
+## Do not do ANYTHING without first entering interactice or scavenger
+# the command is 'srun'
+srun -p P -N X -n Y --gres=G:n --mem=M --pty bash
+# P=partition
+# X=nodes
+# Y=cores
+# G=general resource
+# n=number
+# --mem=memory in MB (default) or gb (specify) --pty bash
+# e.g. srun -p interactive -N 1 -n 2 --mem=4gb --pty bash
+# E.g. srun -p gpu -N 1 -n 8 --mem=96gb --gres=gpu:4 --pty bash
+
+## history pro tip!
+history | grep "keyword2find"
+
+## INTERACTIVE
+# Use to debug, check code, test, test memory
+srun -p interactive -N 1 –n 1  --mem=1024 --pty bash
+srun -p interactive --mem=500 --ntasks=1 --time=00:20:00 --pty bash
+
+# -N # 1 node
+# -n 1 # 1 CPU
+# --mem=1024 # 1GB=1024MB
+
+## SCAVENGER
+srun -p scavenger --time=03:00:00 --ntasks-per-node 2 --pty bash
+
+
+# IDEAL WORKFLOW:
+1. Set up my working environment: files in correct directories, conda environment specs, ensure all programs are working properly and are loaded in environment.
+2. Enter interactive or scavenger (set a timer...) to start testing and compiling base code
+2a. begin SLURM script construction
+3. Test memory of script to run (i.e. SLURM or snakemake dry run)
+3a. prep dataset by making a subset
+3b. conduct dry run
+4. submit script! either with sbatch or gen-profile with snakemake
+
+
+##################
+##EXAMPLE SLURM!##
+##################
+
+#!/bin/bash
+#SBATCH --partition=compute           # Queue selection
+#SBATCH --job-name=fastqc_demo        # Job name
+#SBATCH --mail-type=ALL               # Mail events (BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=ahuang@whoi.edu    # Where to send mail
+#SBATCH --ntasks=1                    # Run a single task
+#SBATCH --cpus-per-task=8             # Number of CPU cores per task
+#SBATCH --mem=20000                     # Job memory request
+#SBATCH --time=01:00:00               # Time limit hrs:min:sec
+#SBATCH --output=fastqc_demo_%j.log   # Standard output/error
+#export OMP_NUM_THREADS=8
+module load bio fastqc
+testcase=/vortexfs1/scratch/ahuang/demo_2
+cd $testcase
+for i in $testcase/input/*
+do fastqc -o $testcase/output -f fastq $i -t 8 --nogroup
+done
+
+#EOF

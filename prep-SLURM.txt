@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH --partition=compute           # Queue selection
+#SBATCH --job-name=ref-db-q2        # Job name
+#SBATCH --mail-type=ALL               # Mail events (BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=u    # Where to send mail
+#SBATCH --ntasks=1                    # Run a single task
+#SBATCH --cpus-per-task=12             # Number of CPU cores per task
+#SBATCH --mem=10000                     # Job memory request
+#SBATCH --time=12:00:00               # Time limit hrs:min:sec
+#SBATCH --output=ref-db-q2.log   # Standard output/error
+#export OMP_NUM_THREADS=12
+
+module load anaconda/5.1
+source activate qiime2-2019.4
+
+# Train a Naive Bayes classifer using the V4 region PR2 reference database.
+#qiime feature-classifier fit-classifier-naive-bayes \
+#  --i-reference-reads pr2_V4_4.11.1.qza \
+#  --i-reference-taxonomy pr2_tax_4.11.1.qza \
+#  --o-classifier /vortexfs1/scratch/sarahhu/pr2_V4classifier_4.11.1.qza
+
+qiime feature-classifier fit-classifier-naive-bayes \
+  --i-reference-reads pr2tmpfasta.qza \
+  --i-reference-taxonomy pr2tmptax.qza \
+  --o-classifier /vortexfs1/scratch/sarahhu/pr2_V4classifier_4.11.1.qza
+
+
+# classify the reference sequence back to themselves
+qiime feature-classifier classify-sklearn \
+  --i-classifier /vortexfs1/scratch/sarahhu/pr2_V4classifier_4.11.1.qza \
+  --i-reads pr2_V4_4.11.1.qza \
+  --o-classification /vortexfs1/scratch/sarahhu/outputtax.qza
+
+# Visualize the taxonomy database
+qiime metadata tabulate \
+  --m-input-file /vortexfs1/scratch/sarahhu/outputtax.qza \
+  --o-visualization /vortexfs1/scratch/sarahhu/taxonomy.qzv
