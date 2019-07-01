@@ -3,14 +3,15 @@
 
 # LOGIN
 ssh sarahhu@poseidon.whoi.edu
+### IF using screen - note that there is a l1 and l2 log-in node
 
 # PATH & DIRECTORY INFORMATION
 cd /vortexfs1/omics/huber/
 pwd #print current working directory
 cd $SCRATCH #migrate to scratch
-cd /vortexfs1/scratch/sarahhu/ # scratch
+cd /vortexfs1/scratch/sarahhu/ # scratch - keep it tidy
 
-mkdir shu
+mkdir nameofdirectory
 ls
 ls -lht
 

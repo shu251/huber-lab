@@ -44,16 +44,15 @@ head -n 10 download-MCR.sh >> download-MCR_10.sh #subset top 10
 bash download-MCR_10.sh
 # CANCEL and let's write a SLURM script
 ```
-
-(1) copy in base SLURM
-(2) default mem is likely ok for this
-(3) modify shell command
-(4) submit SLURM
-(5) monitor with squeue
+1.  copy in base SLURM
+2.  modify shell command
+3. run test
+4.  submit SLURM
+5. monitor with squeue
 
 
 ### Fastqc example
-Current conda environment doesn't have fastqc and multiqc
+If current conda environment doesn't have fastqc and multiqc
 _Google it!_
 
 ```
@@ -62,5 +61,13 @@ conda install -c bioconda multiqc
 ```
 
 
+### Best practices:
 
-### Write with SLURM script
+**Workflow**
+1. Set up my working environment: files in correct directories, conda environment specs, ensure all pr$
+2. Enter interactive or scavenger (set a timer...) to start testing and compiling base code
+2a. begin SLURM script construction
+3. Test memory of script to run (i.e. SLURM or snakemake dry run)
+3a. prep dataset by making a subset
+3b. conduct dry run
+4. submit script! either with sbatch or gen-profile with snakemake
