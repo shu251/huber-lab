@@ -1,6 +1,7 @@
-### Internal Huber lab guide
+## Internal Huber lab guide   
+:ocean: :volcano: :earth_americas: :computer: :microscope:
+***
 Data management with HPC & best practices
-
 
 ### Set up
 ```
@@ -36,7 +37,7 @@ mkdir raw_data
 mv *.csv raw_data/
 ```
 
-### Download files from SRA using R script and bash **TWO WAYS**
+### Download files from SRA by makig a bash script
 
 First enter interactive or scavenger so we can do stuff. Go to SRA explorer website: https://ewels.github.io/sra-explorer/#
 Search for BioProject: PRJNA258374, select *bash script for downloading FastQ files*
@@ -83,7 +84,9 @@ _Best practices for writing and submitting a SLURM job_:
 
 ## Setting up a conda environment! 
 See this website on how to create and manage conda environments:
-https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#building-identical-conda-environments
+https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#building-identical-conda-environments   
+
+There's another example [here, for qc-ing and trimming sequences reads](https://github.com/shu251/qc-trim).
 
 
 ### Example with curating mapping files!
@@ -121,5 +124,4 @@ At this point your command line will change to be proceeded by "(map_curation)"
 Within this environment you can run all that biopython stuff. If you want additional programs added that are related to curation mapping files, add them via a conda install while you are activated in the environment! Then we can keep updating them. 
 
 
-### Example with trimming and QCing sequences reads
 
