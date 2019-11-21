@@ -124,4 +124,54 @@ At this point your command line will change to be proceeded by "(map_curation)"
 Within this environment you can run all that biopython stuff. If you want additional programs added that are related to curation mapping files, add them via a conda install while you are activated in the environment! Then we can keep updating them. 
 
 
+## Setting up to run mothur
 
+1. Create your own conda environment called 'mothur'
+```
+conda create --name mothur
+```
+
+2. Activate this environment
+```
+conda activate mothur
+```
+Your command line should now look like this each line preceeding with '(mothur)', instead of base:
+```
+(mothur) [sarahhu@poseidon-l1 huber-lab]$
+```
+
+3. Install the latest version of mothur
+```
+conda install -c bioconda mothur
+```
+
+4. Test to make sure install was successful
+```
+# Start mothur
+mothur
+
+# Command line should now look like this:
+
+mothur >
+
+# Quit
+quit()
+
+```
+
+To exit this mothur environment, ```conda deactivate mothur```
+
+*Now*, whenever you want to run mothur, type ```conda activate mothur```, and this mothur enabled environment will launch.
+
+5. To run mothur interactively, start up an interactive or scavenger session. See above instructions for this! Then re-activate your mothur conda environment and you should be able to run mothur.
+
+6. Run mothur using slurm!  You need to write all your mothur commands in their own standalone text file. See example from Amy called ```mothur-commands.txt```. Now you need to write a *slurm* script that activates mothur and executes your .txt file!
+  
+Example slurm script to activate and run:
+```
+module load anaconda/5.1  # activate anaconda, so we can use conda environments
+source activate mothur    # activate the mothur conda env
+mothur mothur-commands.txt  # execute the mothur commands
+```
+
+See example files: ```mothur-commands.txt``` and ```mothur-submit-slurm.txt```. _Note_ that mothur is very memory intensive, so you may need to play around with the memory requirements listed at the top of your slurm script. 
