@@ -126,3 +126,46 @@ do fastqc -o $testcase/output -f fastq $i -t 8 --nogroup
 done
 
 #EOF
+
+
+
+## Setting up to run mothur
+
+1. Create your own conda environment called 'mothur'
+```
+conda create --name mothur
+```
+
+2. Activate this environment
+```
+conda activate mothur
+```
+Your command line should now look like this each line preceeding with '(mothur)', instead of base:
+```
+(mothur) [sarahhu@poseidon-l1 huber-lab]$ 
+```
+
+3. Install the latest version of mothur
+```
+conda install -c bioconda mothur
+```
+
+4. Test to make sure install was successful
+```
+# Start mothur
+mothur
+
+# Command line should now look like this:
+
+mothur > 
+
+# Quit
+quit()
+
+```
+
+To exit this mothur environment, ```conda deactivate mothur```
+
+*Now*, whenever you want to run mothur, type ```conda activate mothur```, and this mothur enabled environment will launch.
+
+5. To run mothur interactively, start up an interactive or scavenger session. See above instructions.   
