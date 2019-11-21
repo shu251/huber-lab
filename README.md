@@ -8,6 +8,8 @@ Data management with HPC & best practices
 # Download git repository
 git clone https://github.com/shu251/huber-lab.git
 
+# If you need to update:
+git pull
 
 # Conda
 conda info --envs # view your environments
