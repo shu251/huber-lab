@@ -23,7 +23,10 @@ git pull
 ```
 
 ## Conda
-[Read up on managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html). See some examples below:
+[Read up on managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).   
+I also wrote a [blog post](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) that details how I manage several R versions using conda. It gives some insight into why conda is a really good tool to use!
+See some examples below:
+
 ```
 conda info --envs # view your environments
 
