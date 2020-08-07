@@ -1,40 +1,64 @@
 # Useful commands - S.Hu 
-# Last updated June 2019
+# Last updated Aug 2020
 
 # LOGIN
 ssh sarahhu@poseidon.whoi.edu
 ### IF using screen - note that there is a l1 and l2 log-in node
 
+
 # PATH & DIRECTORY INFORMATION
 cd /vortexfs1/omics/huber/
-pwd #print current working directory
+
+# Print working directory
+pwd
+
+# Location of scratch
 cd $SCRATCH #migrate to scratch
 cd /vortexfs1/scratch/sarahhu/ # scratch - keep it tidy
 
+# To make a directory:
 mkdir nameofdirectory
+
+# View contents of directory:
 ls
 ls -lht
 
-# TAKE ALL MY FILES FROM OVER HERE AND MOVE THEM TO OVER THERE
-## move ‘clustering_tutorial.Rmd’ and “.html” to Poseidon
-## LOCAL LOCATION: /Users/sarahhu/Desktop/Projects/microbiome_TimeSeries_bestpractice/analyzing_microbiome_timeseries/module_clustering/clustering_tutorial*
-## USE PWD TO FIGURE OUT WHERE YOU WANT THESE FILES
-## LOCALLY PERFORM A SECURE COPY (scp)
-scp clustering_tutorial* sarahhu@poseidon.whoi.edu: /vortexfs1/omics/huber/shu/18S_pipeline_V4
+
+####################
+## Moving stuff ####
+## Transfer files ##
+####################
+# Take files from location AAA to BBB:
+scp AAA/files BBB/
+
+# If AAA = clustering_tutorial.Rmd and I want to move it to my desktop:
+# First migrate on your local computer to your desktop (in terminal)
+cd usr/sarahscomputer/Desktop/
+
+# use the 'pwd' command to see where the original file is located. You want the whole path
+# On your local computer, perform scp:
+scp sarahhu@poseidon.whoi.edu:/vortexfs1/omics/huber/shu/18S_pipeline_V4/clustering_tutorial.Rmd . 
 ## you will be prompted for password
 
+# Between server space:
+## From the CDEBI server, I want to bring "list_blast.py" to my space on poseidon:
 
-## EXAMPLE BETWEEN SERVERS:
-## FROM THE WHOI SERVER, I WANT TO BRING .py SCRIPT FROM THE CDEBI SERVER
+scp huberlab@kuat.usc.edu:/media/executor/huberlab/shu/python/list_blast.py sarahhu@poseidon.whoi.edu:/vortexfs1/omics/huber/shu
+
+# If I am currently on poseidon, I can ask scp to place the file in my current position with a period (.)
 scp huberlab@kuat.usc.edu:/media/executor/huberlab/shu/python/list_blast.py .
 
-# WHAT IS HAPPENING
+###################
+# Poseidon status #
+###################
+
 sinfo # cluster information
 squeue #show all jobs
 squeue -u sarahhu # use to look at what you are running (only your jobs)
 
-# mmlsquota --block-size auto
-# mmlsquota -g sg-groupname --block-size auto
+# If you need to cancel a job:
+scancel jobid
+# You can find the jobid number by using squeue
 
 shelp
 
@@ -64,7 +88,7 @@ conda info --envs
 ## Best practices for poseidon usage ##
 #######################################
 
-# Enter interactive or scavenger
+## Interactive
 ## Do not do ANYTHING without first entering interactice or scavenger
 # the command is 'srun'
 srun -p P -N X -n Y --gres=G:n --mem=M --pty bash
@@ -77,10 +101,6 @@ srun -p P -N X -n Y --gres=G:n --mem=M --pty bash
 # e.g. srun -p interactive -N 1 -n 2 --mem=4gb --pty bash
 # E.g. srun -p gpu -N 1 -n 8 --mem=96gb --gres=gpu:4 --pty bash
 
-## history pro tip!
-history | grep "keyword2find"
-
-## INTERACTIVE
 # Use to debug, check code, test, test memory
 srun -p interactive -N 1 –n 1  --mem=1024 --pty bash
 srun -p interactive --mem=500 --ntasks=1 --time=00:20:00 --pty bash
@@ -91,6 +111,9 @@ srun -p interactive --mem=500 --ntasks=1 --time=00:20:00 --pty bash
 
 ## SCAVENGER
 srun -p scavenger --time=03:00:00 --ntasks-per-node 2 --pty bash
+
+## history pro tip!
+history | grep "keyword2find"
 
 
 # IDEAL WORKFLOW:

@@ -9,7 +9,7 @@ _last update August 2020_
 ### Contents of repo:
 
 * Download this repo with list of useful commands (```cmds-hpc.txt```)
-* Organize with conda environments on HPC
+* Organize with conda environments on HPC & best practices
 * see ```slurm-examples``` for base text for slurm commands
 * Download sequences from provided BioProject (Mid-Cayman rise example)
 * How to run mothur with slurm on poseidon
@@ -42,6 +42,16 @@ source activate sarahissocool
 conda install -c bioconda megahit
 ```
 Whenever you need to use megahit, open up this environment and it will be enabled.
+
+## Best practices workflow for using HPC
+
+1. Set up my working environment: files in correct directories, conda environment specs, ensure all progra$
+2. Enter interactive or scavenger (set a timer...) to start testing and compiling base code
+2a. begin SLURM script construction
+3. Test memory of script to run (i.e. SLURM or snakemake dry run)
+3a. prep dataset by making a subset
+3b. conduct dry run
+4. submit script! either with sbatch or gen-profile with snakemake
 
 
 ## Download sequences from public repository
