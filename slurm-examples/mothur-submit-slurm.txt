@@ -11,5 +11,7 @@
 #export OMP_NUM_THREADS=8       # 8 threads
 
 module load anaconda/5.1
+
 source activate mothur
-mothur mothur-commands.txt
+
+mothur /vortexfs1/omics/huber/shu/huber-lab/mothur-commands.txt
