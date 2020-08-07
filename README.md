@@ -1,61 +1,73 @@
 ## Internal Huber lab guide   
 :ocean: :volcano: :earth_americas: :computer: :microscope:
-***
-Data management with HPC & best practices
 
-### Set up
+Data management with HPC & best practices   
+
+_last update August 2020_
+
+
+### Contents of repo:
+
+* Download this repo with list of useful commands (```cmds-hpc.txt```)
+* Organize with conda environments on HPC
+* see ```slurm-examples``` for base text for slurm commands
+* Download sequences from provided BioProject (Mid-Cayman rise example)
+* How to run mothur with slurm on poseidon
+ 
 ```
 # Download git repository
 git clone https://github.com/shu251/huber-lab.git
 
 # If you need to update:
 git pull
+```
 
-# Conda
+## Conda
+[Read up on managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html). See some examples below:
+```
 conda info --envs # view your environments
 
-# Example - create conda environment from Sarah
-conda env create -f snake-18S-env.yaml --name snake-18S 
+# Example - create conda environment
+conda create --name sarahissocool
 
 ## Enter environment
-source activate snake-18S
+source activate sarahissocool
+```
+Now each line in your terminal will be preceeded by ```(sarahissocool)```. When you're in this new environment, google things like "conda install R" or "conda install megahit". In the case of the latter, you can install megahit like this:
 
 ```
+## Enter environment
+source activate sarahissocool 
 
-
-### Test case _Mid-Cayman_
-
-Below describes downloading raw data from Mid-Cayman Rise
-***
-BioProject: PRJNA258374
-https://www.ncbi.nlm.nih.gov/sra?LinkName=bioproject_sra_all&from_uid=258374
-* From 'Send to:' drop down menu, click 'File'
-* Select 'RunInfo' Format and create file
-
-Upload to huber-lab directory
+conda install -c bioconda megahit
 ```
-scp $PATH/SraRunInfo.csv sarahhu@poseidon.whoi.edu:/vortexfs1/omics/huber/shu/huber-lab/
-mkdir raw_data
-mv *.csv raw_data/
-```
+Whenever you need to use megahit, open up this environment and it will be enabled.
 
-### Download files from SRA by makig a bash script
 
-First enter interactive or scavenger so we can do stuff. Go to SRA explorer website: https://ewels.github.io/sra-explorer/#
-Search for BioProject: PRJNA258374, select *bash script for downloading FastQ files*
+## Download sequences from public repository
+BioProject: PRJNA258374 - https://www.ncbi.nlm.nih.gov/sra?LinkName=bioproject_sra_all&from_uid=258374
+
+1. First enter interactive or scavenger so we can do stuff. 
+2. Go to SRA explorer website: https://ewels.github.io/sra-explorer/#
+3. Search for BioProject: PRJNA258374, select *bash script for downloading FastQ files*
+4. copy and paste that into a text file called "download-MCR.sh" - A bash script to download the first ten sequences are here as ```download-MCR_10.sh```
 
 ```
-cd raw_data
+mkdir raw-seqs #Make a new directory to store your new sequences
+
+# use 'nano' text editor to create download-MCR.sh for all sequences or use the provided on
 nano download-MCR.sh # make new bash script
-head -n 10 download-MCR.sh >> download-MCR_10.sh #subset top 10
+
+# Execute bash script like so:
 bash download-MCR_10.sh
-# CANCEL and let's write a SLURM script
+
 ```
-Above the ```bash download-MCR_10.sh``` command will download 10 of the raw fastq files that we listed in download-MCR.sh. **Below** is an example slurm script to submit this job.  
 
-This file is also provided in the repo as ```SLURM-MCR.txt```
+An alternative is to send this to slurm (which is recommended if you have lots of sequences to download).
+See the slurm script: ```slurm-examples/slurm-mcr.txt``` for this.
 
 
+### Slurm example:
 ```
 #!/bin/bash
 #SBATCH --partition=compute           # Queue selection
