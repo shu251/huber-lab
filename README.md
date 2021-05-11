@@ -24,9 +24,12 @@ git pull
 
 ## Conda
 [Read up on managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).   
-I also wrote a [blog post](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) that details how I manage several R versions using conda. It gives some insight into why conda is a really good tool to use!
-See some examples below:
+I also wrote a [blog post](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) that details how I manage several R versions using conda. It gives some insight into why conda is a really good tool to use!   
 
+Also see an explanation of the 'Concept of Conda' [here](https://geohackweek.github.io/datasharing/01-conda-tutorial/) with a helpful infographic. Below I've also included a protocol for creating a new conda environment to install R.
+
+
+See some examples below:
 ```
 conda info --envs # view your environments
 
@@ -34,17 +37,64 @@ conda info --envs # view your environments
 conda create --name sarahissocool
 
 ## Enter environment
-source activate sarahissocool
+conda activate sarahissocool
 ```
 Now each line in your terminal will be preceeded by ```(sarahissocool)```. When you're in this new environment, google things like "conda install R" or "conda install megahit". In the case of the latter, you can install megahit like this:
 
 ```
 ## Enter environment
-source activate sarahissocool 
+conda activate sarahissocool 
 
 conda install -c bioconda megahit
 ```
 Whenever you need to use megahit, open up this environment and it will be enabled.
+
+
+## Create a conda environment for R
+
+1. Log on to access Poseidon
+2. You can be located anywhere on poseidon to create a conda environment
+3. Create a conda environment that is called **R**
+```
+conda create --name R
+```
+> This may take a bit of time, it will show a _Solving environment:_ note while it is creating it. When it asks you to Proceed, type *y* (yes).
+
+4. To view all your conda environments, type the command: ```conda info --envs```. You should now see *R* listed as one of your conda environments.
+5. Enter (or activate) your newly created conda environment
+```
+conda activate R
+```
+> Note that instead of ```(base)``` preceeding your username/log in account on each line, it will now show ```(R)```.
+
+6. Install R in your *R* conda environment!
+
+```
+conda install -c r r 
+```
+> this may also take some time! It will say things like "Collecting package metadata" and again "Solving Environment" (with the command line version of the _spinning wheel_. There will eventually be a long long list of items that you will be asked to install. Proceed by selecting *y*. The environment will then work on preparing and verifying this transaction. 
+
+7. Enable/start up R to see what version you are running by typing ```R```.
+8. Lets install our favorite package and make sure it loads:
+```
+install.packages("tidyverse")
+```
+> You will be prompted to select a CRAN mirror, any should work. Type in the relevant number and hit enter. If you run into an error, document it (copy and paste it somewhere) so we can look at it if needed.
+
+While the above may take some time it should end with somethign like this:
+```
+The downloaded source packages are in
+	‘/tmp/RtmpkAnSzH/downloaded_packages’
+Updating HTML index of packages in '.Library'
+Making 'packages.html' ... done
+```
+
+9. Now test to ensure you can load tidyverse
+```
+library(tidyverse)
+```
+10. To exit R on the command line, type ```quit()```. Do not save your workspace. 
+
 
 ## Best practices workflow for using HPC
 

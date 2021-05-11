@@ -1,8 +1,12 @@
 # Useful commands - S.Hu 
 # Last updated Aug 2020
 
-# LOGIN
+# Login to HPC
+## First, make sure you're on VPN!
+
+## to connect:
 ssh sarahhu@poseidon.whoi.edu
+### You'll be prompted with your password.
 ### IF using screen - note that there is a l1 and l2 log-in node
 
 
