@@ -3,12 +3,13 @@
 
 Data management with HPC & best practices   
 
-_last update August 2020_
+_last update May 2021_
 
 
 ### Contents of repo:
 
 * Download this repo with list of useful commands (```cmds-hpc.txt```)
+* Create a conda environment for R
 * Organize with conda environments on HPC & best practices
 * see ```slurm-examples``` for base text for slurm commands
 * Download sequences from provided BioProject (Mid-Cayman rise example)
