@@ -1,5 +1,5 @@
 # Useful commands - S.Hu 
-# Last updated Aug 2020
+# Last updated May 2021
 
 # Login to HPC
 ## First, make sure you're on VPN!
