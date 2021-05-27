@@ -94,7 +94,9 @@ Making 'packages.html' ... done
 ```
 library(tidyverse)
 ```
-10. To exit R on the command line, type ```quit()```. Do not save your workspace. 
+10. To exit R on the command line, type ```quit()```. Do not save your workspace.   
+
+_See below for information on using this conda environment to run an R script with slurm_
 
 
 ## Best practices workflow for using HPC
@@ -159,6 +161,54 @@ _Best practices for writing and submitting a SLURM job_:
 5. monitor with squeue (```squeue -u sarahhu```)
 
 ***
+
+## Execute R script with slurm
+
+Below the header information in your slurm script, you can enter the R conda environment and run R code or an R script.   
+
+I recommend debugging and running a test on any code or scripts using a subsetted dataset ahead of time.
+
+
+Example slurm script to run an R script, where my R conda environment is called ```r``` and the R script I wanted to run is named ```compile-taxonomy-tables.R```.
+
+```
+#!/bin/bash
+#SBATCH --partition=compute           # Queue selection
+#SBATCH --job-name=runR        # Job name
+#SBATCH --mail-type=ALL               # Mail events (BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=u    # Where to send mail
+#SBATCH --ntasks=1                    # Run a single task
+#SBATCH --cpus-per-task=8             # Number of CPU cores per task (if 8 == 8 threads)
+#SBATCH --mem=10000                     # Job memory request (if 10,000 == 10000MB == 10GB)
+#SBATCH --time=03:00:00               # Time limit hrs:min:sec
+#SBATCH --output=r-cide.log   # Standard output/error
+#export OMP_NUM_THREADS=8       # 8 threads
+
+conda activate r
+Rscript compile-taxonomy-tables.R
+
+```
+In the above scenario, I already know that this Rscript works and outputs the table I want to create.   
+
+
+If you have R code that you want to run, you can use the exact same approach, except start up R instead of running a script. Make sure to include any libraries you may need.
+```
+conda activate r
+
+#start up R:
+R
+
+## add your R code below:
+
+library(tidyverse)
+metaT_metadata <- read.delim("../data/SampleList_2020_metaT.txt")
+output <- metaT_metadata %>%
+	filter(Annotation != NA)
+write_delim(output, file = "newoutputfile.txt", delim = "\t")
+
+```
+
+
 
 ## Setting up a conda environment! 
 See this website on how to create and manage conda environments:
